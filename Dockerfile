@@ -1,5 +1,7 @@
 FROM mysql:5.7 as builder
 
+LABEL stage=intermediate
+
 # That file does the DB initialization but also runs mysql daemon, by removing the last line it will only init
 RUN ["sed", "-i", "s/exec \"$@\"/echo \"not running $@\"/", "/usr/local/bin/docker-entrypoint.sh"]
 
