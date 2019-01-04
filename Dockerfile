@@ -19,4 +19,9 @@ RUN ["/usr/local/bin/docker-entrypoint.sh", "mysqld", "--datadir", "/initialized
 
 FROM mysql:5.7
 
-COPY --from=builder /initialized-db /var/lib/mysql
+RUN mkdir -p /var/lib/mysqldata
+
+# Need to change the datadir to something other than /var/lib/mysql because the parent docker file defines it as a volume.
+RUN sed -i 's|/var/lib/mysql|/var/lib/mysqldata|g' /etc/mysql/mysql.conf.d/mysqld.cnf
+
+COPY --from=builder /initialized-db /var/lib/mysqldata
