@@ -6,7 +6,8 @@ RUN ["sed", "-i", "s/exec \"$@\"/echo \"not running $@\"/", "/usr/local/bin/dock
 # needed for intialization
 ENV MYSQL_ROOT_PASSWORD=root
 
-COPY setup.sql /docker-entrypoint-initdb.d/
+ARG sqlfile
+COPY $sqlfile /docker-entrypoint-initdb.d/
 
 # Need to change the datadir to something else that /var/lib/mysql because the parent docker file defines it as a volume.
 # https://docs.docker.com/engine/reference/builder/#volume :
